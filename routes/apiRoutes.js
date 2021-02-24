@@ -1,7 +1,4 @@
 const db = require("../models");
-const mongoose = require("mongoose");
-
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
 
 module.exports = function(app) {
     
@@ -18,10 +15,11 @@ module.exports = function(app) {
 
   //get workouts
   app.get("/api/workouts", function(req, res) {
-    db.Workout.find().sort({ _id: -1 }).limit(1)
+    db.Workout
+    .find().sort({ _id: -1 }).limit(1)
     .populate("exercises")
+    
     .then(data => {
-        console.log(data);
         res.json(data);
     })
     .catch(err => {
@@ -43,9 +41,17 @@ module.exports = function(app) {
   });
 
 //   // get workouts in range
-//   app.get("/api/workouts/range", function(req, res) {
-    
-//   });
+  app.get("/api/workouts/range", function(req, res) {
+    db.Workout.find().sort({ _id: -1 }).limit(7)
+    .populate("exercises")
+    .then(data => {
+        console.log(data);
+        res.json(data);
+    })
+    .catch(err => {
+        res.json(err);
+    })
+  });
 
 
 };
