@@ -15,10 +15,7 @@ module.exports = function(app) {
 
   //get workouts
   app.get("/api/workouts", function(req, res) {
-    db.Workout
-    .find().sort({ _id: -1 }).limit(1)
-    .populate("exercises")
-    
+    db.Workout.find().sort({ _id: -1 }).limit(1)
     .then(data => {
         res.json(data);
     })
@@ -29,9 +26,8 @@ module.exports = function(app) {
 
 //   add exercise
   app.put("/api/workouts/:id", (req, res) => {
-      const query = { _id: req.params.id };
-    db.Exercise.create(req.body)
-        .then(({ _id }) => db.Workout.findOneAndUpdate(query, { $push: { exercises: _id } }, { new: true }))
+      const id = req.params.id;
+    db.Workout.findByIdAndUpdate(id, { $push: { exercises: req.body } }, { new: true })
         .then(data => {
             res.json(data);
         })
@@ -40,10 +36,9 @@ module.exports = function(app) {
         })
   });
 
-//   // get workouts in range
+   // get workouts in range
   app.get("/api/workouts/range", function(req, res) {
     db.Workout.find().sort({ _id: -1 }).limit(7)
-    .populate("exercises")
     .then(data => {
         console.log(data);
         res.json(data);

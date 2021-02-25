@@ -22,13 +22,6 @@ function generatePalette() {
 }
 
 function populateChart(data) {
-  data.forEach(workout => {
-    let sum = 0;
-    workout.exercises.forEach(exercise => {
-      sum += exercise.duration;
-    });
-    workout.totalDuration = sum;
-  });
   let durations = data.map(({ totalDuration }) => totalDuration);
   let pounds = calculateTotalWeight(data);
   let workouts = workoutNames(data);
@@ -40,13 +33,13 @@ function populateChart(data) {
   let pie2 = document.querySelector('#canvas4').getContext('2d');
 
   const daysOfWeek = [
-    'Saturday',
-    'Friday',
-    'Thursday',
-    'Wednesday',
-    'Tuesday',
-    'Monday',
     'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
   ];
 
   const labels = data.map(({ day }) => {
